@@ -43,7 +43,7 @@ public abstract class Tarefa {
     @Column(nullable = false, name = "eh_agendado")
     private Boolean ehAgendado;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "TEXT", length = 1000)
     private String observacoes;
 
     @ManyToOne(fetch = FetchType.LAZY)

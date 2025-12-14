@@ -6,38 +6,24 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
-    // Busca por email (para login)
-    Optional<Usuario> findByEmail(String email);
-
-    // Verifica se email já existe
-    boolean existsByEmail(String email);
-
-    // Verifica se CPF já existe
-    boolean existsByCpf(String cpf);
-
-    // Busca por nome (case insensitive)
-    List<Usuario> findByNomeContainingIgnoreCase(String nome);
-
-    // Busca por parte do email
-    List<Usuario> findByEmailContaining(String email);
-
-    // Busca usuários com tarefas (usando JOIN FETCH)
-    @Query("SELECT DISTINCT u FROM Usuario u LEFT JOIN FETCH u.tarefas WHERE u.id = :id")
-    Optional<Usuario> findByIdWithTarefas(@Param("id") Long id);
-
-    // Conta total de usuários
     long count();
 
-    // Busca usuários ordenados por data de criação
-    List<Usuario> findAllByOrderByDataCriacaoDesc();
+    // validação para o email e o cpf (campos unicos)
+    boolean existsByEmail(String email);
+    boolean existsByCpf(String cpf);
 
-    // Busca usuários ativos (com tarefas)
+    Optional<Usuario> findByEmail(String email);
+    Optional<Usuario> findByCpf(String cpf);
+    List<Usuario> findByNomeContainingIgnoreCase(String nome);
+
     @Query("SELECT u FROM Usuario u WHERE SIZE(u.tarefas) > 0")
     List<Usuario> findUsuariosComTarefas();
+
 }

@@ -11,7 +11,7 @@ public class TarefaResponseDTO {
     private LocalDateTime dataFinal;
     private Boolean ehAgendado;
     private String observacoes;
-    private String tipoTarefa; // "ESTUDO" ou "TREINO"
+    private String tipoTarefa;
     private LocalDateTime dataCriacao;
     private LocalDateTime dataAtualizacao;
 

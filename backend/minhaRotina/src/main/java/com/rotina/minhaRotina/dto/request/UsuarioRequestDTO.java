@@ -1,5 +1,6 @@
 package com.rotina.minhaRotina.dto.request;
 
+import com.rotina.minhaRotina.enums.BiotipoFisico;
 import com.rotina.minhaRotina.enums.Sexo;
 import jakarta.validation.constraints.*;
 import lombok.Data;
@@ -32,4 +33,19 @@ public class UsuarioRequestDTO {
 
     @Size(max = 20, message = "O Telefone deve ter no máximo 20 caracteres")
     private String telefone;
+
+    @Min(value = 0, message = "Altura deve ser positiva")
+    private Double altura;
+
+    @Min(value = 0, message = "O peso deve ser positivo")
+    private Double peso;
+
+    @Min(value = 0, message = "o IMC deve ser positivo")
+    private Double imc;
+
+    @Min(value = 0, message = "A porcentagem de gordura não pode ser inferior a 0%")
+    @Max(value = 100, message = "A porcentagem de gordura não pode ser superior a 100%")
+    private Double porcentagemGordura;
+
+    private BiotipoFisico biotipoFisico;
 }

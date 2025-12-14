@@ -25,11 +25,12 @@ public class UsuarioController {
 
     private final UsuarioService usuarioService;
 
+    // ===== Cadastrando um novo usuario =====
     @Operation(summary = "Criar um novo usuário")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Usuário criado com sucesso"),
             @ApiResponse(responseCode = "400", description = "Dados inválidos fornecidos"),
-            @ApiResponse(responseCode = "409", description =  "Email ou CPF já cadastrado")
+            @ApiResponse(responseCode = "409", description = "Email ou CPF já cadastrado")
     })
     @PostMapping
     public ResponseEntity<UsuarioResponseDTO> criarUsuario(
@@ -40,6 +41,7 @@ public class UsuarioController {
         return ResponseEntity.status(HttpStatus.CREATED).body(usuarioCriado);
     }
 
+    // ===== Buscando usuario pelo seu ID =====
     @Operation(summary = "Buscar usuário por ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Usuário encontrado"),
@@ -54,6 +56,7 @@ public class UsuarioController {
         return ResponseEntity.ok(usuario);
     }
 
+    // ===== Buscando todos os usuario =====
     @Operation(summary = "Listar todos os usuários")
     @ApiResponse(responseCode = "200", description = "Lista de usuários retornada")
     @GetMapping
@@ -62,6 +65,7 @@ public class UsuarioController {
         return ResponseEntity.ok(usuarios);
     }
 
+    // ===== Buscando usuario pelo seu email =====
     @Operation(summary = "Buscar usuário por email")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Usuário encontrado"),
@@ -76,6 +80,7 @@ public class UsuarioController {
         return ResponseEntity.ok(usuario);
     }
 
+    // ===== Buscando usuario pelo seu nome =====
     @Operation(summary = "Buscar usuários por nome")
     @ApiResponse(responseCode = "200", description = "Usuários encontrados")
     @GetMapping("/buscar")
@@ -87,6 +92,31 @@ public class UsuarioController {
         return ResponseEntity.ok(usuarios);
     }
 
+    // ===== Buscando usuario pelo seu cpf =====
+    @Operation(summary = "Buscar usuário por cpf")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Usuário encontrado"),
+            @ApiResponse(responseCode = "404", description = "Usuário não encontrado")
+    })
+    @GetMapping("/cpf/{cpf}")
+    public ResponseEntity<UsuarioResponseDTO> buscarPorCpf(
+            @Parameter(description = "CPF do usuário")
+            @PathVariable String cpf) {
+
+        UsuarioResponseDTO usuario = usuarioService.buscarPorCpf(cpf);
+        return ResponseEntity.ok(usuario);
+    }
+
+    // ===== Buscando usuarios com tarefas vinculadas =====
+    @Operation(summary = "Buscar usuários com tarefas vinculadas")
+    @ApiResponse(responseCode = "200", description = "Usuários encontrados")
+    @GetMapping("/com-tarefas")
+    public ResponseEntity<List<UsuarioResponseDTO>> buscarComTarefas() {
+        List<UsuarioResponseDTO> usuarios = usuarioService.buscarComTarefas();
+        return ResponseEntity.ok(usuarios);
+    }
+
+    // ===== Atualizando os dados do usuario =====
     @Operation(summary = "Atualizar um usuário")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Usuário atualizado com sucesso"),
@@ -105,6 +135,7 @@ public class UsuarioController {
         return ResponseEntity.ok(usuarioAtualizado);
     }
 
+    // ===== Excluindo um usuario =====
     @Operation(summary = "Excluir um usuário")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Usuário excluído com sucesso"),
@@ -126,6 +157,7 @@ public class UsuarioController {
         return ResponseEntity.ok(response);
     }
 
+    // ===== Contagem de usuarios cadastrados =====
     @Operation(summary = "Contar total de usuários")
     @ApiResponse(responseCode = "200", description = "Total de usuários retornado")
     @GetMapping("/contagem")

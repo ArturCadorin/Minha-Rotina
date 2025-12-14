@@ -20,4 +20,8 @@ public class EstudoRequestDTO extends TarefaRequestDTO {
 
     @PositiveOrZero(message = "As Horas diárias não podem ser menor que zero!")
     private Integer horasDiarias;
+
+    private Boolean ehSimulado;
+    private Integer quantidadeQuestoes;
+    private Double notaFinalSimulado;
 }

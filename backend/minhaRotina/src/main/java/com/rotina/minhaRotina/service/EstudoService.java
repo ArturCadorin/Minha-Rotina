@@ -26,23 +26,43 @@ public class EstudoService {
     private final EstudoMapper estudoMapper;
     private final MapperHelper mapperHelper;
 
+    // ===== Criando um estudo =====
     public EstudoResponseDTO criarEstudo(EstudoRequestDTO estudoRequestDTO) {
-        // Validar dados
+
         validarEstudo(estudoRequestDTO);
 
-        // Buscar usuário
         Usuario usuario = usuarioService.buscarEntidadePorId(estudoRequestDTO.getUsuarioId());
-
-        // Converter DTO para Entity usando MapperHelper
         Estudo estudo = mapperHelper.toEstudoEntity(estudoRequestDTO, usuario);
-
-        // Salvar no banco
         Estudo estudoSalvo = estudoRepository.save(estudo);
 
-        // Retornar DTO de resposta
         return estudoMapper.toDTO(estudoSalvo);
     }
 
+    // ===== Atualizando um estudo =====
+    public EstudoResponseDTO atualizarEstudo(Long id, EstudoRequestDTO estudoRequestDTO) {
+
+        validarEstudo(estudoRequestDTO);
+
+        Estudo estudoExistente = estudoRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Estudo", id));
+
+        Usuario usuario = usuarioService.buscarEntidadePorId(estudoRequestDTO.getUsuarioId());
+        mapperHelper.updateEstudoFromDTO(estudoRequestDTO, estudoExistente, usuario);
+        Estudo estudoAtualizado = estudoRepository.save(estudoExistente);
+
+        return estudoMapper.toDTO(estudoAtualizado);
+    }
+
+    // ===== Excluindo um estudo =====
+    public void excluirEstudo(Long id) {
+
+        Estudo estudo = estudoRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Estudo", id));
+
+        estudoRepository.delete(estudo);
+    }
+
+    // ===== Metodos para transações(conversão) de dados =====
     @Transactional(readOnly = true)
     public EstudoResponseDTO buscarPorId(Long id) {
         Estudo estudo = estudoRepository.findById(id)
@@ -60,7 +80,7 @@ public class EstudoService {
 
     @Transactional(readOnly = true)
     public List<EstudoResponseDTO> buscarPorUsuario(Long usuarioId) {
-        // Verificar se usuário existe
+
         usuarioService.existeUsuario(usuarioId);
 
         return estudoRepository.findByUsuarioId(usuarioId)
@@ -87,7 +107,7 @@ public class EstudoService {
 
     @Transactional(readOnly = true)
     public List<EstudoResponseDTO> buscarEstudosIntensos() {
-        return estudoRepository.findEstudosIntensos()
+        return estudoRepository.    findEstudosIntensos()
                 .stream()
                 .map(estudoMapper::toDTO)
                 .collect(Collectors.toList());
@@ -95,7 +115,7 @@ public class EstudoService {
 
     @Transactional(readOnly = true)
     public List<EstudoResponseDTO> buscarPorUsuarioEObjetivo(Long usuarioId, String objetivo) {
-        // Verificar se usuário existe
+
         usuarioService.existeUsuario(usuarioId);
 
         return estudoRepository.findByUsuarioIdAndObjetivoContainingIgnoreCase(usuarioId, objetivo)
@@ -104,42 +124,14 @@ public class EstudoService {
                 .collect(Collectors.toList());
     }
 
-    public EstudoResponseDTO atualizarEstudo(Long id, EstudoRequestDTO estudoRequestDTO) {
-        // Validar dados
-        validarEstudo(estudoRequestDTO);
-
-        // Buscar estudo existente
-        Estudo estudoExistente = estudoRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Estudo", id));
-
-        // Buscar usuário
-        Usuario usuario = usuarioService.buscarEntidadePorId(estudoRequestDTO.getUsuarioId());
-
-        // Atualizar entidade usando MapperHelper
-        mapperHelper.updateEstudoFromDTO(estudoRequestDTO, estudoExistente, usuario);
-
-        // Salvar atualização
-        Estudo estudoAtualizado = estudoRepository.save(estudoExistente);
-
-        return estudoMapper.toDTO(estudoAtualizado);
-    }
-
-    public void excluirEstudo(Long id) {
-        // Verificar se estudo existe
-        Estudo estudo = estudoRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Estudo", id));
-
-        estudoRepository.delete(estudo);
-    }
-
     @Transactional(readOnly = true)
     public Object[] obterEstatisticasPorUsuario(Long usuarioId) {
-        // Verificar se usuário existe
-        usuarioService.existeUsuario(usuarioId);
 
+        usuarioService.existeUsuario(usuarioId);
         return estudoRepository.findEstatisticasByUsuarioId(usuarioId);
     }
 
+    // ===== Metodo para validacao dos dados =====
     private void validarEstudo(EstudoRequestDTO estudoRequestDTO) {
         // Validar horas diárias vs horas totais
         if (estudoRequestDTO.getHorasDiarias() != null && estudoRequestDTO.getHorasTotais() != null) {

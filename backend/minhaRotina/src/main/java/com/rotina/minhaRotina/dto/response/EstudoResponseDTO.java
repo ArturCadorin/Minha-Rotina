@@ -10,4 +10,7 @@ public class EstudoResponseDTO extends TarefaResponseDTO {
     private String objetivo;
     private Integer horasTotais;
     private Integer horasDiarias;
+    private Boolean ehSimulado;
+    private Integer quantidadeQuestoes;
+    private Double notaFinalSimulado;
 }

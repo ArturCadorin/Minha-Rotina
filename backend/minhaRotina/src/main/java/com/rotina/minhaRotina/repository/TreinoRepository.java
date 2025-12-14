@@ -15,35 +15,21 @@ import java.util.Optional;
 @Repository
 public interface TreinoRepository extends JpaRepository<Treino, Long> {
 
-    // Busca treinos por usuário
     List<Treino> findByUsuarioId(Long usuarioId);
-
-    // Busca por modalidade
     List<Treino> findByModalidade(ModalidadeTreino modalidade);
-
-    // Busca por intensidade
     List<Treino> findByIntensidade(IntensidadeTreino intensidade);
-
-    // Busca por objetivo
     List<Treino> findByObjetivo(ObjetivoTreino objetivo);
-
-    // Busca treinos com distância maior que
     List<Treino> findByDistanciaGreaterThan(Double distancia);
-
-    // Busca treinos com séries específicas
     List<Treino> findBySeries(Integer series);
-
-    // Busca treinos por modalidade e intensidade
     List<Treino> findByModalidadeAndIntensidade(ModalidadeTreino modalidade, IntensidadeTreino intensidade);
-
-    // Busca treinos de cardio (com distância)
     List<Treino> findByDistanciaIsNotNull();
-
-    // Busca treinos de força (com séries)
     List<Treino> findBySeriesIsNotNull();
-
-    // Busca treinos ordenados por horas totais
     List<Treino> findAllByOrderByHorasTotaisDesc();
+
+    // Busca treinos com velocidade média maior que
+    List<Treino> findByVelocidadeMediaGreaterThan(Double velocidade);
+    // Busca treinos intensos (alta intensidade)
+    List<Treino> findByIntensidadeAndHorasTotaisGreaterThan(IntensidadeTreino intensidade, Long horasMinimas);
 
     // Estatísticas de treinos por usuário
     @Query("SELECT COUNT(t), SUM(t.horasTotais), AVG(t.horasTotais) FROM Treino t WHERE t.usuario.id = :usuarioId")
@@ -56,12 +42,6 @@ public interface TreinoRepository extends JpaRepository<Treino, Long> {
     // Busca treinos por equipamento
     @Query("SELECT t FROM Treino t JOIN t.equipamentos e WHERE e = :equipamento")
     List<Treino> findByEquipamento(@Param("equipamento") String equipamento);
-
-    // Busca treinos com velocidade média maior que
-    List<Treino> findByVelocidadeMediaGreaterThan(Double velocidade);
-
-    // Busca treinos intensos (alta intensidade)
-    List<Treino> findByIntensidadeAndHorasTotaisGreaterThan(IntensidadeTreino intensidade, Long horasMinimas);
 
     // Busca treinos com usuário carregado
     @Query("SELECT t FROM Treino t JOIN FETCH t.usuario WHERE t.id = :id")

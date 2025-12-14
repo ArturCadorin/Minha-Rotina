@@ -25,6 +25,7 @@ public class TarefaController {
 
     private final TarefaService tarefaService;
 
+    // ===== Buscando a tarefa pelo seu ID =====
     @Operation(summary = "Buscar tarefa por ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Tarefa encontrada"),
@@ -39,6 +40,7 @@ public class TarefaController {
         return ResponseEntity.ok(tarefa);
     }
 
+    // ===== Buscando todas as tarefas =====
     @Operation(summary = "Listar todas as tarefas")
     @ApiResponse(responseCode = "200", description = "Lista de tarefas retornada")
     @GetMapping
@@ -47,6 +49,7 @@ public class TarefaController {
         return ResponseEntity.ok(tarefas);
     }
 
+    // ===== Buscando tarefa por usuario =====
     @Operation(summary = "Buscar tarefas por usuário")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Tarefas encontradas"),
@@ -61,6 +64,7 @@ public class TarefaController {
         return ResponseEntity.ok(tarefas);
     }
 
+    // ===== Busca tarefas conforme data inicial e final =====
     @Operation(summary = "Buscar tarefas por período")
     @ApiResponse(responseCode = "200", description = "Tarefas encontradas")
     @GetMapping("/periodo")
@@ -74,6 +78,7 @@ public class TarefaController {
         return ResponseEntity.ok(tarefas);
     }
 
+    // ===== Busca as tarefas por usuario e periodo =====
     @Operation(summary = "Buscar tarefas por usuário e período")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Tarefas encontradas"),
@@ -92,6 +97,7 @@ public class TarefaController {
         return ResponseEntity.ok(tarefas);
     }
 
+    // ===== Buscando todas as tarefas que estao agendadas =====
     @Operation(summary = "Buscar tarefas agendadas")
     @ApiResponse(responseCode = "200", description = "Tarefas agendadas encontradas")
     @GetMapping("/agendadas")
@@ -100,6 +106,7 @@ public class TarefaController {
         return ResponseEntity.ok(tarefas);
     }
 
+    // ===== Buscando as tarefas agendadas do usuario =====
     @Operation(summary = "Buscar tarefas agendadas por usuário")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Tarefas agendadas encontradas"),
@@ -114,6 +121,7 @@ public class TarefaController {
         return ResponseEntity.ok(tarefas);
     }
 
+    // ===== Buscando as proximas tarefas do usuario =====
     @Operation(summary = "Buscar próximas tarefas do usuário")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Próximas tarefas encontradas"),
@@ -128,6 +136,7 @@ public class TarefaController {
         return ResponseEntity.ok(tarefas);
     }
 
+    // ===== Buscando tarefa pela descricao =====
     @Operation(summary = "Buscar tarefas por descrição")
     @ApiResponse(responseCode = "200", description = "Tarefas encontradas")
     @GetMapping("/buscar")
@@ -139,6 +148,7 @@ public class TarefaController {
         return ResponseEntity.ok(tarefas);
     }
 
+    // ===== Exclui a tarefa =====
     @Operation(summary = "Excluir uma tarefa")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Tarefa excluída com sucesso"),
@@ -153,6 +163,8 @@ public class TarefaController {
         return ResponseEntity.noContent().build();
     }
 
+
+    // ===== Contagem de tarefas por usuario =====
     @Operation(summary = "Contar tarefas por usuário")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Contagem retornada"),

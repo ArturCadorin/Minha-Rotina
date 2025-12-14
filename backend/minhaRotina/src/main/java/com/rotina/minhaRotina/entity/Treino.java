@@ -83,7 +83,7 @@ public class Treino extends Tarefa {
             name = "treino_equipamentos",
             joinColumns = @JoinColumn(name = "treino_id")
     )
-    @Column(name = "equipamento", length = 100)
+    @Column(name = "equipamentos", length = 100)
     private List<String> equipamentos;
 
     @Column(name = "freq_cardiaca_maxima")

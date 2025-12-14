@@ -1,5 +1,6 @@
 package com.rotina.minhaRotina.entity;
 
+import com.rotina.minhaRotina.enums.BiotipoFisico;
 import com.rotina.minhaRotina.enums.Sexo;
 import jakarta.persistence.*;
 import lombok.*;
@@ -27,7 +28,7 @@ public class Usuario {
     private Long id;
 
     /*
-        Dados básicos do usuário do sistema
+        Dados básicos do usuário
      */
     @Column(nullable = false, unique = true, length = 100)
     private String email;
@@ -35,6 +36,9 @@ public class Usuario {
     @Column(nullable = false)
     private String senha;
 
+    /*
+        Dados básicos da pessoa física
+    */
     @Column(nullable = false, length = 200)
     private String nome;
 
@@ -50,6 +54,16 @@ public class Usuario {
 
     @Column(length = 20)
     private String telefone;
+
+    private Double altura;a
+    private Double peso;
+    private Double imc;
+
+    @Column(name = "porcentagem-gordura")
+    private Double porcentagemGordura;
+
+    @Column(name = "biotipo-fisico")
+    private BiotipoFisico biotipoFisico;
 
     /*
         Dados atribuidos ao usuário
@@ -81,7 +95,9 @@ public class Usuario {
 
     // factory method - criando usuario completo
     public static Usuario criarUsuarioCompleto(String email, String senha, String nome, String cpf,
-                                               LocalDate dataNascimento, Sexo sexo, String telefone) {
+                                               LocalDate dataNascimento, Sexo sexo, String telefone,
+                                               Double altura, Double peso, Double imc,
+                                               Double porcentagemGordura, BiotipoFisico biotipoFisico) {
         return Usuario.builder()
                 .email(email)
                 .senha(senha)
@@ -90,6 +106,11 @@ public class Usuario {
                 .dataNascimento(dataNascimento)
                 .sexo(sexo)
                 .telefone(telefone)
+                .altura(altura)
+                .peso(peso)
+                .imc(imc)
+                .porcentagemGordura(porcentagemGordura)
+                .biotipoFisico(biotipoFisico)
                 .build();
     }
 }

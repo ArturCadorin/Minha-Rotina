@@ -22,6 +22,7 @@ public class TarefaService {
     private final TarefaMapper tarefaMapper;
     private final UsuarioService usuarioService;
 
+    // ===== Buscando pelo ID =====
     @Transactional(readOnly = true)
     public TarefaResponseDTO buscarPorId(Long id) {
         Tarefa tarefa = tarefaRepository.findById(id)
@@ -35,6 +36,7 @@ public class TarefaService {
                 .orElseThrow(() -> new ResourceNotFoundException("Tarefa", id));
     }
 
+    // ===== Busca todas tarefas =====
     @Transactional(readOnly = true)
     public List<TarefaResponseDTO> listarTodas() {
         return tarefaRepository.findAll()
@@ -43,6 +45,7 @@ public class TarefaService {
                 .collect(Collectors.toList());
     }
 
+    // ===== Busca por usuario =====
     @Transactional(readOnly = true)
     public List<TarefaResponseDTO> buscarPorUsuario(Long usuarioId) {
         // Verificar se usuário existe
@@ -54,6 +57,7 @@ public class TarefaService {
                 .collect(Collectors.toList());
     }
 
+    // ===== Busca tarefa por periodo =====
     @Transactional(readOnly = true)
     public List<TarefaResponseDTO> buscarPorPeriodo(LocalDateTime inicio, LocalDateTime fim) {
         return tarefaRepository.findByDataInicialBetween(inicio, fim)
@@ -62,6 +66,7 @@ public class TarefaService {
                 .collect(Collectors.toList());
     }
 
+    // ===== Busca tarefa por usuario e periodo =====
     @Transactional(readOnly = true)
     public List<TarefaResponseDTO> buscarPorUsuarioEPeriodo(Long usuarioId, LocalDateTime inicio, LocalDateTime fim) {
         // Verificar se usuário existe
@@ -73,6 +78,7 @@ public class TarefaService {
                 .collect(Collectors.toList());
     }
 
+    // ===== Busca tarefas agendadas =====
     @Transactional(readOnly = true)
     public List<TarefaResponseDTO> buscarTarefasAgendadas() {
         return tarefaRepository.findByEhAgendadoTrue()
@@ -81,6 +87,7 @@ public class TarefaService {
                 .collect(Collectors.toList());
     }
 
+    // ===== Busca tarefas agendadas de um usuario =====
     @Transactional(readOnly = true)
     public List<TarefaResponseDTO> buscarTarefasAgendadasPorUsuario(Long usuarioId) {
         // Verificar se usuário existe
@@ -92,6 +99,7 @@ public class TarefaService {
                 .collect(Collectors.toList());
     }
 
+    // ===== Busca as proximas tarefas cadastradas =====
     @Transactional(readOnly = true)
     public List<TarefaResponseDTO> buscarProximasTarefas(Long usuarioId) {
         // Verificar se usuário existe
@@ -103,6 +111,7 @@ public class TarefaService {
                 .collect(Collectors.toList());
     }
 
+    // ===== Busca tarefa pela descricao =====
     @Transactional(readOnly = true)
     public List<TarefaResponseDTO> buscarPorDescricao(String descricao) {
         return tarefaRepository.findByDescricaoContainingIgnoreCase(descricao)
@@ -111,6 +120,7 @@ public class TarefaService {
                 .collect(Collectors.toList());
     }
 
+    // ===== Exclui uma tarefa =====
     public void excluirTarefa(Long id) {
         // Verificar se tarefa existe
         Tarefa tarefa = tarefaRepository.findById(id)
@@ -119,6 +129,7 @@ public class TarefaService {
         tarefaRepository.delete(tarefa);
     }
 
+    // ===== Contagem de tarefas por usuario =====
     @Transactional(readOnly = true)
     public long contarTarefasPorUsuario(Long usuarioId) {
         // Verificar se usuário existe
